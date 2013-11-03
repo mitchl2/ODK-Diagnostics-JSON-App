@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>jQuery UI Demo</title>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		
+		<!-- Font Awesome library -->
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+		<!-- -->
+		
+		<link rel="stylesheet" href="stylesheet.css" />
+
+		<!-- this script is from the JavaScript Load Image library -->
+		<script src="js/load-image.min.js"></script>
+		<!-- -->
+		
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="jscript.js"></script>
+	</head>
+	<body>
+		<h3 id="page_title" class="row">ODK Diagnostics</h3>
+		<div id="toolbar" class="row">
+			<div id="image_menu" class="navbar sub_menu main_row col-md-2 col-md-offset-2 col-xs-3">		
+				<h4>Images</h4>
+				<i class="fa fa-picture-o fa-lg" id="image_select"></i>
+				<select id="dropdown">
+					<option value="none">None</option>
+					<option value="sample_images/SD_HIV.jpg">SD HIV</option>
+					<option value="sample_images/DFA_Multiplex.jpg">DFA Multiplex</option>
+					<option value="sample_images/SD_Malaria.jpg">SD Malaria</option>
+				</select>
+				<br>
+				<i class="fa fa-minus-square remove_image"></i><span class="remove_image"> Remove image</span>
+			</div>
+			<div id="shapes_menu" class="navbar sub_menu main_row col-md-2 col-xs-3">
+				<h4>Shapes</h4>
+				<div>
+					<div id="make_box" class="menu_shape square_item"></div>
+					<div id="make_circle" class="menu_shape circle_item"></div>			
+				</div>
+			</div>
+			<div id="create_json" class="navbar sub_menu main_row col-md-2 col-xs-3">
+				<h4>Create JSON</h4>
+				<button id="make_json" class="ui-state-default">Generate JSON File</button>
+			</div>
+			<div id="help" class="navbar sub_menu main_row col-md-2 col-xs-3">
+				<h4>About</h4>
+				<button id="help_button" class="ui-state-default">Help</button>
+				<button id="about_button" class="ui-state-default">What is ODK Diagnostics?</button>
+			</div>
+		</div>
+		<div class="row">
+			<div id="properties_menu" class="col-md-2 col-xs-3">
+				<div id="shape_properties" class="navbar sub_menu">
+					<h5>Shape Properties</h5>
+
+						<label for="name">X position</label>
+						<input type="text" id="x_pos" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<label for="name">Y position</label>
+						<input type="text" id="y_pos" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<label for="name">Width</label>
+						<input type="text" id="shape_width" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<label for="name">Height</label>
+						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+				</div>
+				<div id="user_defined_properties" class="navbar sub_menu">
+					<h5>User Properties</h5>
+					<i class="fa fa-plus-square add_property menu_button" id="add_udef_property"></i>New
+					<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>
+					<form>
+						<fieldset>
+						
+						</fieldset>
+					</form>
+				</div>
+				<div id="json_properties" class="navbar sub_menu">
+					<h5>JSON Properties</h5>
+					<i class="fa fa-plus-square add_property menu_button" id="add_json_property"></i>New<br>
+					<form>
+						<fieldset>
+						
+						</fieldset>
+					</form>	
+				</div>
+			</div>
+			<!-- issue: shapes can be dragged outside the bounds of the image in the viewing window because the
+						size of the viewing window is being set here according the number of columns allocated
+						to the window -->
+			<div id="viewing_window" class="col-md-10 col-xs-9">
+			</div>			
+		</div>
+	</body>
+	
+	<!-- this element is hidden, when the image_select button is clicked then 
+		this input element will be clicked -->
+	<input type="file" id="file_browse" accept="image/*">
+	
+	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
+	<div id="udef_prop_dialog" title="Create user property">
+		<label for="name">Property name</label>
+		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
+	</div>
+	
+	<!-- this dialog menu is opened when the add_json_property icon is clicked -->
+	<div id="json_prop_dialog" title="Create JSON property">
+		<label for="name">Property name</label>
+		<input type="text" name="name" id="new_json_prop" class="text ui-widget-content ui-corner-all" />
+	</div>
+	
+	<!-- this dialog menu is opened when the make_json icon is clicked -->
+	<div id="create_json_dialog" title="Generated JSON File">
+		<textarea id="json_text" readonly></textarea>
+	</div>
+	
+	<!-- this dialog menu help icon is clicked -->
+	<div id="help_dialog" title="Help">
+		<p id="title">Follow the steps below to create your JSON output.</p>
+		<div class="step">
+			<p>Click the picture icon to browse your computer for an image, or select a sample image from the drop-down menu.</p>
+			<img src="help/images_menu.png">
+		</div>
+		<br>
+		<div class="step">
+			<p>Click and drag shapes onto the selected image.</p>
+			<img src="help/shapes_menu.png">
+		</div>
+		<br>
+		<div class="step">
+			<p>Select a shape on the image to view its position (relative to the top left corner of the image) and size. New shape properties can be created and edited in the <b>User Properties</b> menu. JSON properties can also be created and edited by using the <b>JSON Properties</b> menu.</p>
+			<img src="help/properties_menu.png">
+		</div>
+		<br>
+		<div class="step">
+			<p>After placing and resizing the appropriate shapes onto the image, click the Generate JSON File.</p>
+			<img src="help/json_menu.png">
+		</div>
+	</div>
+	
+</html>
