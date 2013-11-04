@@ -22,7 +22,7 @@ var reset_udef_menu = function() {
 var curr = 0; // current shape number
 var max_window_width = 0; // used to set a max size on the viewing window
 var img_view_offset = 15; // adds margin to the bottom of the viewing window and bottom of the screen
-$(function() { 
+$(window).bind("load", function() { 
 	/* Sets all element in the toolbar menu to have the same height.
 	   The code is from this StackOverflow post:
 	   http://stackoverflow.com/questions/12330786/is-there-a-way-to-make-all-elements-in-a-row-class-the-same-height
