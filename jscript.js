@@ -1,10 +1,10 @@
 // JavaScript file
 
 var update_shape_menu = function(curr) {
-					$('#x_pos').val(curr.position().left)
-					$('#y_pos').val(curr.position().top)
-					$('#shape_width').val(curr.width())
-					$('#shape_height').val(curr.height())
+					$('#x_pos').val(Math.floor(curr.position().left))
+					$('#y_pos').val(Math.floor(curr.position().top))
+					$('#shape_width').val(Math.floor(curr.width()))
+					$('#shape_height').val(Math.floor(curr.height()))
 				}
 				
 var update_udef_menu = function(curr) {
