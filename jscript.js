@@ -19,6 +19,15 @@ var reset_udef_menu = function() {
 					$(".udef_property").val("");
 				}
 				
+var set_margin = function() {
+				console.log("max window width: " + max_window_width);
+				console.log("img width: " + $("#viewing_window img").width());
+				console.log("(max_window_width - $(#viewing_window img).width()) / 2: " + ((max_window_width - $("#viewing_window img").width()) / 2));
+				var window_offset = Math.max((max_window_width - $("#viewing_window img").width()) / 2, 0);
+				$("#viewing_window").css("margin-left", window_offset);
+				console.log("margin-left has been set to: " + window_offset);
+			}
+				
 var curr = 0; // current shape number
 var max_window_width = 0; // used to set a max size on the viewing window
 var img_view_offset = 15; // adds margin to the bottom of the viewing window and bottom of the screen
@@ -57,7 +66,7 @@ $(function() {
 			max_window_width = 0;
 			$(".main_row").each(
 				function() {
-					max_window_width += $(this).width();
+					max_window_width += $(this).outerWidth();
 				}
 			);
 		}
@@ -75,7 +84,7 @@ $(function() {
 					$("#viewing_window").droppable("disable");
 				}
 			} else {
-				loadImage(
+				var load = loadImage(
 					$("#dropdown").val(),
 					function (img) {
 						if ($("#viewing_window img")) {
@@ -87,6 +96,7 @@ $(function() {
 						$("#viewing_window").width(img.width);
 						$("#viewing_window").height(img.height);
 						$("#viewing_window").prepend(img);
+						set_margin();
 					},
 					{maxWidth: max_window_width,
 					 maxHeight: 
@@ -129,6 +139,7 @@ $(function() {
 					$("#viewing_window").width(img.width);
 					$("#viewing_window").height(img.height);
 					$("#viewing_window").prepend(img);
+					set_margin();
 				},
 				{maxWidth: max_window_width,
 				 maxHeight: 
@@ -140,11 +151,49 @@ $(function() {
 	
 	$("#copy_shape").on("click",
 		function() {
-		
-		
+			var curr_position = $(".selected_shape").position();
+			var offset = 12;
+			var $orig_shape = $(".selected_shape");
+			var lock_ratio = $(".selected_shape").hasClass("circle_item");
+			/* don't want the cloned shape to inherit the original draggable/resiable event handlers */
+			$orig_shape.draggable("destroy");
+			$orig_shape.resizable("destroy");
+			
+			// clone will copy all of the data fields and event handlers from the original shape
+			var $new_shape = $(".selected_shape").clone(true);
+
+			$new_shape.attr("id", $(".selected_shape").attr("id") + "_copy");
+			$new_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
+			.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
+			
+			// add draggable and resizable classes back to the original shape
+			$orig_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
+			.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
+			
+			var offset = 12;
+			var left_offset = 0;
+			var top_offset = 0;
+			
+			// calculate position of copied shape - accounts for special cases
+			if (curr_position.top + $(".selected_shape").height() + offset > $("#viewing_window").height()) {
+				top_offset = -offset;
+			} else {
+				top_offset = offset;
+			}
+			
+			if (curr_position.left + $(".selected_shape").width() + offset > $("#viewing_window").width()) {
+				left_offset = -offset;
+			} else {
+				left_offset = offset;
+			}
+			
+			$new_shape.css({left:curr_position.left + left_offset, top:curr_position.top + top_offset});
+			$(".selected_shape").removeClass("selected_shape");
+			
+			$new_shape.addClass("selected_shape");
+			$new_shape.appendTo("#viewing_window");
 		}
 	);
-	
 	
 	/*
 		Initiate Dialog windows
@@ -370,8 +419,10 @@ $(function() {
 			} 
 			
 			$(".selected_shape").removeClass("selected_shape");
+			
+			var lock_ratio = $(".selected_shape").hasClass("circle_item");
 			$new_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
-					.resizable({containment: "parent", position: "absolute", handles: "all"});
+					.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
 					
 			$new_shape.css({top: ui.draggable.offset().top - $("#viewing_window").offset().top,
 							left: ui.draggable.offset().left - $("#viewing_window").offset().left});
@@ -399,6 +450,7 @@ $(function() {
 					$(".selected_shape").removeClass("selected_shape");
 					$(this).addClass("selected_shape");
 					update_shape_menu($(this));
+					console.log("shape being resized!");
 				}
 			);
 
