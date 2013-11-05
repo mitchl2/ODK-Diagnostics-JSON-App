@@ -22,7 +22,7 @@ var reset_udef_menu = function() {
 var curr = 0; // current shape number
 var max_window_width = 0; // used to set a max size on the viewing window
 var img_view_offset = 15; // adds margin to the bottom of the viewing window and bottom of the screen
-$(window).bind("load", function() { 
+$(function() { 
 	/* Sets all element in the toolbar menu to have the same height.
 	   The code is from this StackOverflow post:
 	   http://stackoverflow.com/questions/12330786/is-there-a-way-to-make-all-elements-in-a-row-class-the-same-height
@@ -34,6 +34,11 @@ $(window).bind("load", function() {
 		return $(this).height();
 	}).get());
 	boxes.height(maxHeight);
+	
+	/* 
+		Setup toolbar menu 
+		
+	*/
 	
 	// hacky way to invoke the file browse button
 	// when the picture icon is selected
@@ -132,6 +137,14 @@ $(window).bind("load", function() {
 			);
 		}
 	);	
+	
+	$("#copy_shape").on("click",
+		function() {
+		
+		
+		}
+	);
+	
 	
 	/*
 		Initiate Dialog windows
@@ -302,6 +315,10 @@ $(window).bind("load", function() {
 				function(index) {
 					var curr_tuple = [];
 					var udef_data = $(this).data()
+					
+					// determine shape type, ASSUMES shape type is either square or circle
+					var shape_type = $(this).hasClass("square_item") ? "square" : "circle";
+					curr_tuple.push("\"shape_type\":\"" + shape_type + "\"");
 					
 					/* iterate over all user defined properties */
 					for (ele in udef_data) {

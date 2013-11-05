@@ -43,6 +43,11 @@ legend {
 	display: inline-block;
 }
 
+#copy_shape {
+	vertical-align:middle;
+	float: right;
+}
+
 .sub_menu {
 	border: 1px solid black;
 	text-align: center;

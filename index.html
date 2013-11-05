@@ -38,10 +38,9 @@
 			</div>
 			<div id="shapes_menu" class="navbar sub_menu main_row col-md-2 col-xs-3">
 				<h4>Shapes</h4>
-				<div>
 					<div id="make_box" class="menu_shape square_item"></div>
-					<div id="make_circle" class="menu_shape circle_item"></div>			
-				</div>
+					<div id="make_circle" class="menu_shape circle_item"></div>
+					<button id="copy_shape">Copy</button>	
 			</div>
 			<div id="create_json" class="navbar sub_menu main_row col-md-2 col-xs-3">
 				<h4>Create JSON</h4>
@@ -68,7 +67,7 @@
 						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
 				</div>
 				<div id="user_defined_properties" class="navbar sub_menu">
-					<h5>User Properties</h5>
+					<h5>Field Properties</h5>
 					<i class="fa fa-plus-square add_property menu_button" id="add_udef_property"></i>New
 					<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>
 					<form>
@@ -78,7 +77,7 @@
 					</form>
 				</div>
 				<div id="json_properties" class="navbar sub_menu">
-					<h5>JSON Properties</h5>
+					<h5>Global Properties</h5>
 					<i class="fa fa-plus-square add_property menu_button" id="add_json_property"></i>New<br>
 					<form>
 						<fieldset>
@@ -130,7 +129,7 @@
 		</div>
 		<br>
 		<div class="step">
-			<p>Select a shape on the image to view its position (relative to the top left corner of the image) and size. New shape properties can be created and edited in the <b>User Properties</b> menu. JSON properties can also be created and edited by using the <b>JSON Properties</b> menu.</p>
+			<p>Select a shape on the image to view its position (relative to the top left corner of the image) and size. New shape properties can be created and edited in the <b>Field Properties</b> menu. Global properties can also be created and edited by using the <b>Global Properties</b> menu.</p>
 			<img src="help/properties_menu.PNG">
 		</div>
 		<br>
