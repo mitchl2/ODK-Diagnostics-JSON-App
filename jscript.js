@@ -356,6 +356,10 @@ $(function() {
 				}
 			);
 			
+			/* add image height and width to JSON */
+			json_output += "\t\"width\":" + "\"" + $("#viewing_window img").width() + "\",\n";
+			json_output += "\t\"height\":" + "\"" + $("#viewing_window img").height() + "\",\n";
+			
 			json_output += "\t\"fields\": ";
 			
 			var shape_array = [];
@@ -366,7 +370,7 @@ $(function() {
 					var curr_tuple = [];
 					var udef_data = $(this).data()
 					
-					// determine shape type, ASSUMES shape type is either square or circle
+					// determine shape type, NOTE: ASSUMES shape type is either square or circle
 					var shape_type = $(this).hasClass("square_item") ? "square" : "circle";
 					curr_tuple.push("\"shape_type\":\"" + shape_type + "\"");
 					
