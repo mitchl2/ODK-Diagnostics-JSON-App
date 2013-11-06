@@ -84,8 +84,7 @@
 						<span class="input-group-addon">Name</span>
 						<input type="text" class="form-control" placeholder="">
 					</div>
-					<br>
-					<i class="fa fa-plus-square add_property menu_button" id="add_udef_property"></i>New
+					New <i class="fa fa-plus-square add_property menu_button" id="add_udef_property"></i>
 					<!--<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>-->
 					<form>
 						<fieldset>
@@ -117,8 +116,11 @@
 	
 	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
 	<div id="udef_prop_dialog" title="Create user property">
-		<label for="name">Property name</label>
+		<label for="name">Name</label>
 		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
+		<br>
+		<label for="name">Value</label>
+		<input type="text" name="name" id="new_udef_prop_val" class="text ui-widget-content ui-corner-all" />
 	</div>
 	
 	<!-- this dialog menu is opened when the add_json_property icon is clicked -->
@@ -156,9 +158,14 @@
 		</div>
 	</div>
 	
-	<!-- this dialog menu is opened when an edit-field button is clicked -->
+	<!-- this dialog menu is opened when an edit-field button is clicked
 	<div id="edit_field_dialog" title="Help">
-
-	</div>
+		<label for="name">Name</label>
+		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
+		<br>
+		<br>
+		<label for="name">Value</label>
+		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
+	</div>-->
 	
 </html>

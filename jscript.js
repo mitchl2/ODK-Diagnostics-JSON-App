@@ -20,12 +20,10 @@ var reset_udef_menu = function() {
 				}
 				
 var set_margin = function() {
-				console.log("max window width: " + max_window_width);
-				console.log("img width: " + $("#viewing_window img").width());
-				console.log("(max_window_width - $(#viewing_window img).width()) / 2: " + ((max_window_width - $("#viewing_window img").width()) / 2));
-				var window_offset = Math.max((max_window_width - $("#viewing_window img").width()) / 2, 0);
-				$("#viewing_window").css("margin-left", window_offset);
-				console.log("margin-left has been set to: " + window_offset);
+				if ($("#viewing_window").children().length > 0) {
+					var window_offset = Math.max((max_window_width - $("#viewing_window img").width()) / 2, 0);
+					$("#viewing_window").css("margin-left", window_offset);
+				}
 			}
 				
 var curr = 0; // current shape number
@@ -221,13 +219,33 @@ $(function() {
 					return;
 				}
 			
+				/*
 				var $prop_label = $("<label/>").attr("for", "name").text($("#new_udef_prop").val());
-				var $prop_input = $("<input/>").addClass('input_form')
+				var $prop_input = $("<input/>").addClass('form-control').css("width", "40px");
 				$prop_input.attr("id", $("#new_udef_prop").val()).addClass("udef_property").attr("type", "text").val("");
 				$prop_input.addClass("text ui-widget-content ui-corner-all");
 				
-				var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
+				//var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
+				var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg");
+				//var $edit_dialog = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
 				var $new_line = $("<br/>");
+				*/
+				
+				var $new_prop = $("<div/>").addClass("input-group input-group-sm");
+				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_udef_prop").val());
+				var $input = $("<input/>").attr("type", "text").addClass("form-control").val($("#new_udef_prop_val").val());
+				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
+				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
+				
+				$new_prop.append($prop_label).append($input).append($edit).append($delete);
+				
+				$("#user_defined_properties fieldset").append($new_prop);
+				/*
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon">Name</span>
+					<input type="text" class="form-control">
+				</div>
+				*/
 				
 				$delete.on("click",
 					function() {
@@ -235,16 +253,19 @@ $(function() {
 						$(".shape").removeData($prop_input.attr("id"));
 						$prop_label.remove();
 						$prop_input.remove();
-						
 						$new_line.remove();
 						$(this).remove();
 					}
 				);
 				
+				/*
 				$("#user_defined_properties fieldset").append($prop_label);
 				$("#user_defined_properties fieldset").append($delete);
 				$("#user_defined_properties fieldset").append($prop_input);
 				$("#user_defined_properties fieldset").append($new_line);
+				*/
+				
+				
 				$("#new_udef_prop").val(null)
 				$(this).dialog("close");
 			},
