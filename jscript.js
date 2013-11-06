@@ -69,6 +69,7 @@ $(function() {
 					max_window_width += $(this).outerWidth();
 				}
 			);
+			set_margin();
 		}
 	);
 	$(window).resize()
@@ -376,11 +377,11 @@ $(function() {
 						}
 					}
 					
-					/* add all shape properties to the tuple, NOTE: hard-coded values! */
-					curr_tuple.push("\"x\":\"" + $(this).position().left + "\"");
-					curr_tuple.push("\"y\":\"" + $(this).position().top + "\"");
-					curr_tuple.push("\"width\":\"" + $(this).width() + "\"");
-					curr_tuple.push("\"height\":\"" + $(this).height() + "\"");
+					/* add all shape properties to the tuple, NOTE: rounding all values down*/		
+					curr_tuple.push("\"x\":\"" + Math.floor($(this).position().left) + "\"");
+					curr_tuple.push("\"y\":\"" + Math.floor($(this).position().top) + "\"");
+					curr_tuple.push("\"width\":\"" + Math.floor($(this).width()) + "\"");
+					curr_tuple.push("\"height\":\"" + Math.floor($(this).height()) + "\"");
 					
 					shape_array.push("{" + curr_tuple + "}");
 				}

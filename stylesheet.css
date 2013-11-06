@@ -80,7 +80,7 @@ legend {
 	height: 40px;
 	text-align: center; 
 	border: 2px solid black;
-	opacity: 0.5;
+	opacity: 0.75;
 	cursor: move;
 }
 
@@ -91,7 +91,7 @@ legend {
 	text-align: center; 
 	border: 2px solid black; 
 	border-radius: 50%;
-	opacity: 0.5;
+	opacity: 0.75;
 	cursor: move;
 }
 
