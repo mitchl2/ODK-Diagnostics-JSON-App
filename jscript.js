@@ -45,7 +45,7 @@ $(function() {
 	boxes.height(maxHeight);
 	
 	/* 
-		Setup toolbar menu 
+		Setup toolbar menu and properties menu
 		
 	*/
 	
@@ -194,6 +194,14 @@ $(function() {
 			
 			$new_shape.addClass("selected_shape");
 			$new_shape.appendTo("#viewing_window");
+		}
+	);
+	
+	// on-click handler for shape type drowndown menu, set's the dropdown
+	// menu's text to the currently selected type
+	$("#shape_type li a").on("click",
+		function() {
+			$("#shape_type_label").html($(this).text() +' <span class="caret"></span>');
 		}
 	);
 	
@@ -371,7 +379,7 @@ $(function() {
 					var curr_tuple = [];
 					var udef_data = $(this).data()
 					
-					// determine shape type, NOTE: ASSUMES shape type is either square or circle
+					// determine shape type, NOTE: assumes shape type is either a square or circle
 					var shape_type = $(this).hasClass("square_item") ? "square" : "circle";
 					curr_tuple.push("\"shape_type\":\"" + shape_type + "\"");
 					
@@ -382,11 +390,17 @@ $(function() {
 						}
 					}
 					
-					/* add all shape properties to the tuple, NOTE: rounding all values down*/		
+					/* add all shape properties to the tuple, NOTE: rounding all values down*/
 					curr_tuple.push("\"x\":\"" + Math.floor($(this).position().left + ($(this).width() / 2.0)) + "\"");
 					curr_tuple.push("\"y\":\"" + Math.floor($(this).position().top + ($(this).height() / 2.0)) + "\"");
-					curr_tuple.push("\"width\":\"" + Math.floor($(this).width()) + "\"");
-					curr_tuple.push("\"height\":\"" + Math.floor($(this).height()) + "\"");
+					
+					/* NOTE: assumes that shape is either a square or circle */
+					if ($(this).hasClass("square_item")) {
+						curr_tuple.push("\"width\":\"" + Math.floor($(this).width()) + "\"");
+						curr_tuple.push("\"height\":\"" + Math.floor($(this).height()) + "\"");
+					} else {
+						curr_tuple.push("\"radius\":\"" + Math.floor($(this).width() / 2.0) + "\"");
+					}
 					
 					shape_array.push("{" + curr_tuple + "}");
 				}
