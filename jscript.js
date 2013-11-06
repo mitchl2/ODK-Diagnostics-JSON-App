@@ -1,8 +1,8 @@
 // JavaScript file
 
 var update_shape_menu = function(curr) {
-					$('#x_pos').val(Math.floor(curr.position().left))
-					$('#y_pos').val(Math.floor(curr.position().top))
+					$('#x_pos').val(Math.floor(curr.position().left + (curr.width() / 2.0)))
+					$('#y_pos').val(Math.floor(curr.position().top + (curr.height() / 2.0)))
 					$('#shape_width').val(Math.floor(curr.width()))
 					$('#shape_height').val(Math.floor(curr.height()))
 				}
@@ -90,6 +90,7 @@ $(function() {
 					function (img) {
 						if ($("#viewing_window img")) {
 							$("#viewing_window img").remove();
+							$("#viewing_window .shape").remove();
 						}
 						$(img).css("border", "1px solid black");
 						$(".remove_image").css('visibility', 'visible');
@@ -382,8 +383,8 @@ $(function() {
 					}
 					
 					/* add all shape properties to the tuple, NOTE: rounding all values down*/		
-					curr_tuple.push("\"x\":\"" + Math.floor($(this).position().left) + "\"");
-					curr_tuple.push("\"y\":\"" + Math.floor($(this).position().top) + "\"");
+					curr_tuple.push("\"x\":\"" + Math.floor($(this).position().left + ($(this).width() / 2.0)) + "\"");
+					curr_tuple.push("\"y\":\"" + Math.floor($(this).position().top + ($(this).height() / 2.0)) + "\"");
 					curr_tuple.push("\"width\":\"" + Math.floor($(this).width()) + "\"");
 					curr_tuple.push("\"height\":\"" + Math.floor($(this).height()) + "\"");
 					
@@ -416,6 +417,7 @@ $(function() {
 	$("#viewing_window").on("drop", 
 		function(event, ui) {
 			var $new_shape;
+			$(".selected_shape").removeClass("selected_shape");
 			
 			if (ui.draggable.attr("id") == "make_box") {
 				$new_shape = $("<div/>").attr("id", "box" + curr).addClass("selected_shape").addClass("square_item").addClass("shape");
@@ -423,9 +425,7 @@ $(function() {
 				$new_shape = $("<div/>").attr("id", "circle" + curr).addClass("selected_shape").addClass("circle_item").addClass("shape");
 			} 
 			
-			$(".selected_shape").removeClass("selected_shape");
-			
-			var lock_ratio = $(".selected_shape").hasClass("circle_item");
+			var lock_ratio = $new_shape.hasClass("circle_item");
 			$new_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
 					.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
 					
