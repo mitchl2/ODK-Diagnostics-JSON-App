@@ -3,6 +3,11 @@
 <html>
 	<head>
 		<title>jQuery UI Demo</title>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="jscript.js"></script>
+		
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 		
@@ -15,14 +20,8 @@
 		<!-- this script is from the JavaScript Load Image library -->
 		<script src="js/load-image.min.js"></script>
 		<!-- -->
-		
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-		<script src="jscript.js"></script>
 	</head>
 	<body>
-		<h3 id="page_title" class="row">ODK Diagnostics</h3>
 		<div id="toolbar" class="row">
 			<div id="image_menu" class=" sub_menu main_row col-md-2 col-md-offset-2 col-xs-3">		
 				<h4>Images</h4>
@@ -58,17 +57,16 @@
 					<h5>Shape Properties</h5>
 
 						<label for="name">X position</label>
-						<input type="text" id="x_pos" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<input type="text" id="x_pos" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
 						<label for="name">Y position</label>
-						<input type="text" id="y_pos" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<input type="text" id="y_pos" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
 						<label for="name">Width</label>
-						<input type="text" id="shape_width" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<input type="text" id="shape_width" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
 						<label for="name">Height</label>
-						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all input_form shape_property" readonly><br>
+						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
 				</div>
 				<div id="user_defined_properties" class=" sub_menu">
 					<h5>Field Properties</h5>
-					
 					<div class="btn-group" id="shape_type">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="shape_type_label">Type <span class="caret"></span>
 					  </button>
@@ -79,12 +77,14 @@
 					  </ul>
 					</div>
 					<br>
-					<br>
-					<div class="input-group input-group-sm" style="margin-left: 15px; margin-right: 15px">
+					<div class="input-group input-group-sm">
 						<span class="input-group-addon">Name</span>
 						<input type="text" class="form-control" placeholder="">
 					</div>
-					New <i class="fa fa-plus-square add_property menu_button" id="add_udef_property"></i>
+					<div class="menu_button">
+						New property <i class="fa fa-plus-square add_property" id="add_field_property"></i>
+					</div>
+					<br>
 					<!--<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>-->
 					<form>
 						<fieldset>
@@ -115,18 +115,24 @@
 	<input type="file" id="file_browse" accept="image/*">
 	
 	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
-	<div id="udef_prop_dialog" title="Create user property">
+	<div id="field_prop_dialog" title="Create field property">
 		<label for="name">Name</label>
-		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
+		<input type="text" name="name" id="new_field_prop" class="text ui-widget-content ui-corner-all dialog_input" />
 		<br>
 		<label for="name">Value</label>
-		<input type="text" name="name" id="new_udef_prop_val" class="text ui-widget-content ui-corner-all" />
+		<input type="text" name="name" id="new_field_prop_val" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 	
+	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
+	<div id="update_field_dialog" title="Update field property">
+		<label id="field_label" for="name"></label>
+		<input type="text" name="name" id="curr_value" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+
 	<!-- this dialog menu is opened when the add_json_property icon is clicked -->
-	<div id="json_prop_dialog" title="Create JSON property">
+	<div id="json_prop_dialog" title="Create global property">
 		<label for="name">Property name</label>
-		<input type="text" name="name" id="new_json_prop" class="text ui-widget-content ui-corner-all" />
+		<input type="text" name="name" id="new_global_prop" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 	
 	<!-- this dialog menu is opened when the make_json icon is clicked -->

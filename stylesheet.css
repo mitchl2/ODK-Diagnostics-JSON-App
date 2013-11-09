@@ -105,6 +105,10 @@ legend {
 	width: 600px;
 }
 
+#field_label {
+	float: left;
+}
+
 .step {
 	display: inline-block;
 	margin-top: 5px;
@@ -139,13 +143,28 @@ legend {
 	background-color: green;
 }
 
+.input-group, .input-group-sm {
+	margin: 5px;
+}
+
 .input_text {
 	margin-left: 10px;
 	margin-right: 5px;
 }
 
-.input_form {
+.shape_prop_input {
 	margin-right: 10px;
 	float: right;
 	width: 5em;
+}
+
+.dialog_input {
+	margin-left: 10px;
+	float: right;
+	width: 10em;
+}
+
+.form-control[readonly] {
+	/* overrides default grey background for the input box */
+	background-color: white;
 }

@@ -8,7 +8,7 @@ var update_shape_menu = function(curr) {
 				}
 				
 var update_udef_menu = function(curr) {
-					$(".udef_property").each(
+					$(".field_property").each(
 						function() {
 							$(this).val(curr.data($(this).attr("id")));
 						}
@@ -16,7 +16,7 @@ var update_udef_menu = function(curr) {
 				}
 
 var reset_udef_menu = function() {
-					$(".udef_property").val("");
+					$(".field_property").val("");
 				}
 				
 var set_margin = function() {
@@ -117,7 +117,7 @@ $(function() {
 			$(".remove_image").css('visibility', 'hidden');
 			$(".shape").remove();
 			$(".shape_property").val(null);
-			$(".udef_property").val(null);
+			$(".field_property").val(null);
 			$(".json_property").val(null);	
 		}
 	);
@@ -208,88 +208,78 @@ $(function() {
 	*/
 	
 	// Shape properties dialog
-	$("#udef_prop_dialog").dialog({
+	$("#field_prop_dialog").dialog({
 		autoOpen: false,
 		modal: true,
 		width: 'auto',
 		buttons: {
 			"Ok": function() {
-				if ($("#new_udef_prop").val().length == 0) {
+				if ($("#new_field_prop").val().length == 0) {
 					$(this).dialog("close"); // don't add property with blank name
 					return;
 				}
-			
-				/*
-				var $prop_label = $("<label/>").attr("for", "name").text($("#new_udef_prop").val());
-				var $prop_input = $("<input/>").addClass('form-control').css("width", "40px");
-				$prop_input.attr("id", $("#new_udef_prop").val()).addClass("udef_property").attr("type", "text").val("");
-				$prop_input.addClass("text ui-widget-content ui-corner-all");
-				
-				//var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
-				var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg");
-				//var $edit_dialog = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
-				var $new_line = $("<br/>");
-				*/
 				
 				var $new_prop = $("<div/>").addClass("input-group input-group-sm");
-				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_udef_prop").val());
-				var $input = $("<input/>").attr("type", "text").addClass("form-control").val($("#new_udef_prop_val").val());
+				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_field_prop").val());
+				
+				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
+				$input.addClass("field_property").addClass("form-control").val($("#new_field_prop_val").val()).attr("id", $("#new_field_prop").val());
+				
 				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
+				
 				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
+				$edit.on("click",
+					function() {
+						console.log("edit button clicked")
+						$("#field_label").text($prop_label.text());
+						console.log("input value is: " + $input.val());
+						$("#curr_value").val($input.val());
+						$("#update_field_dialog").dialog("open");
+					}
+				);
 				
 				$new_prop.append($prop_label).append($input).append($edit).append($delete);
 				
 				$("#user_defined_properties fieldset").append($new_prop);
-				/*
-				<div class="input-group input-group-sm">
-					<span class="input-group-addon">Name</span>
-					<input type="text" class="form-control">
-				</div>
-				*/
-				
+
 				$delete.on("click",
 					function() {
 						// remove this data from all shapes
-						$(".shape").removeData($prop_input.attr("id"));
-						$prop_label.remove();
-						$prop_input.remove();
-						$new_line.remove();
+						$(".shape").removeData($prop_label.text());
+						$new_prop.remove();
 						$(this).remove();
 					}
 				);
 				
-				/*
-				$("#user_defined_properties fieldset").append($prop_label);
-				$("#user_defined_properties fieldset").append($delete);
-				$("#user_defined_properties fieldset").append($prop_input);
-				$("#user_defined_properties fieldset").append($new_line);
-				*/
-				
-				
-				$("#new_udef_prop").val(null)
+				$("#new_field_prop").val(null);
+				$("#new_field_prop_val").val(null);
 				$(this).dialog("close");
 			},
 			"Cancel": function() {
-				$("#new_udef_prop").val(null)
+				$("#new_field_prop").val(null)
 				$(this).dialog("close");
 			}
 		}
 	});
 	
-	$("#add_udef_property").on('click', 
+	$("#add_field_property").on('click', 
 		function() {
-			$("#udef_prop_dialog").dialog("open");
+			$("#field_prop_dialog").dialog("open");
 		}
 	);
 	
-	$("#update_udef_prop").click(
-		function() {
-			$(".udef_property").each(
-				function(index, element) {
-					// add all of the current property/value pairs to the selected_shape shape
-					$(".selected_shape").data($(this).attr("id"), $(this).val());
-				}
-			);
+	// Update field dialog
+	$("#update_field_dialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 'auto',
+		buttons: {
+			"Ok": function() {
+				$("#" + $("#field_label").text()).val($("#curr_value").val());
+				$(".selected_shape").data($("#field_label").text(), $("#curr_value").val());
+				$(this).dialog("close");
+			}
+		}
 	});
 	
 	// JSON properties dialog
@@ -299,14 +289,14 @@ $(function() {
 		width: 'auto',
 		buttons: {
 			"Ok": function() {
-				if ($("#new_json_prop").val().length == 0) {
+				if ($("#new_global_prop").val().length == 0) {
 					$(this).dialog("close"); // don't add property with blank name
 					return;
 				}
 			
-				var $prop_label = $("<label/>").attr("for", "name").text($("#new_json_prop").val());
+				var $prop_label = $("<label/>").attr("for", "name").text($("#new_global_prop").val());
 				var $prop_input = $("<input/>").addClass('input_form')
-				$prop_input.attr("id", $("#new_json_prop").val()).addClass("json_property").attr("type", "text").val("");
+				$prop_input.attr("id", $("#new_global_prop").val()).addClass("json_property").attr("type", "text").val("");
 				$prop_input.addClass("text ui-widget-content ui-corner-all");
 				
 				var $delete = $("<i/>").addClass("fa fa-minus-square fa-lg").css("float", "right");
@@ -325,11 +315,11 @@ $(function() {
 				$("#json_properties fieldset").append($delete);
 				$("#json_properties fieldset").append($prop_input);
 				$("#json_properties fieldset").append($new_line);
-				$("#new_json_prop").val(null)
+				$("#new_global_prop").val(null)
 				$(this).dialog("close");
 			},
 			"Cancel": function() {
-				$("#new_json_prop").val(null)
+				$("#new_global_prop").val(null)
 				$(this).dialog("close");
 			}
 		}
@@ -498,7 +488,7 @@ $(function() {
 				function() {
 					$(this).remove();
 					$(".shape_property").val(null);
-					$(".udef_property").val(null);
+					$(".field_property").val(null);
 				}
 			);
 			
