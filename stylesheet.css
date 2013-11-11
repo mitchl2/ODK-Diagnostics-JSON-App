@@ -14,17 +14,14 @@ Mitchell Lee
 
 .row {
 	/* create vertical space between columns */
-	margin-bottom: 15px;
+	margin-bottom: 0px;
 	margin-left: 5px;
 }
 
-.navbar {
-	/* overrides default margin added to element */
-	margin-bottom: 0px;
-}
-
-h3 {
+#page_title {
+	display: inline-block;
 	text-align: center;
+	vertical-align: middle;
 }
 
 legend {

@@ -23,7 +23,10 @@
 	</head>
 	<body>
 		<div id="toolbar" class="row">
-			<div id="image_menu" class=" sub_menu main_row col-md-2 col-md-offset-2 col-xs-3">		
+			<div class="title_container col-md-2 col-xs-3">
+				<h3 id="page_title" class="row">ODK Diagnostics</h3>
+			</div>
+			<div id="image_menu" class="sub_menu main_row col-md-2 col-xs-3">		
 				<h4>Images</h4>
 				<i class="fa fa-picture-o fa-lg" id="image_select"></i>
 				<select id="dropdown">
@@ -53,7 +56,7 @@
 		</div>
 		<div class="row">
 			<div id="properties_menu" class="col-md-2 col-xs-3">
-				<div id="shape_properties" class=" sub_menu">
+				<div id="shape_properties" class="sub_menu">
 					<h5>Shape Properties</h5>
 
 						<label for="name">X position</label>
@@ -65,7 +68,7 @@
 						<label for="name">Height</label>
 						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
 				</div>
-				<div id="user_defined_properties" class=" sub_menu">
+				<div id="user_defined_properties" class="sub_menu">
 					<h5>Field Properties</h5>
 					<div class="btn-group" id="shape_type">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="shape_type_label">Type <span class="caret"></span>
@@ -92,7 +95,7 @@
 						</fieldset>
 					</form>
 				</div>
-				<div id="json_properties" class=" sub_menu">
+				<div id="json_properties" class="sub_menu">
 					<h5>Global Properties</h5>
 					<i class="fa fa-plus-square add_property menu_button" id="add_json_property"></i>New<br>
 					<form>
