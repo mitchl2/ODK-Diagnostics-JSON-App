@@ -56,19 +56,28 @@
 		</div>
 		<div class="row">
 			<div id="properties_menu" class="col-md-2 col-xs-3">
-				<div id="shape_properties" class="sub_menu">
+				<div id="shape_properties">
 					<h5>Shape Properties</h5>
-
-						<label for="name">X position</label>
-						<input type="text" id="x_pos" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
-						<label for="name">Y position</label>
-						<input type="text" id="y_pos" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
-						<label for="name">Width</label>
-						<input type="text" id="shape_width" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
-						<label for="name">Height</label>
-						<input type="text" id="shape_height" class="text ui-widget-content ui-corner-all shape_prop_input shape_property" readonly><br>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">X Position</span>
+						<input type="text" id="x_pos" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Y Position</span>
+						<input type="text" id="y_pos" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Width</span>
+						<input type="text" id="shape_width" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Height</span>
+						<input type="text" id="shape_height" class="form-control shape_property" placeholder="">
+					</div>
+					
 				</div>
-				<div id="user_defined_properties" class="sub_menu">
+				<hr>
+				<div id="user_defined_properties">
 					<h5>Field Properties</h5>
 					<div class="btn-group" id="shape_type">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="shape_type_label">Type <span class="caret"></span>
@@ -84,8 +93,8 @@
 						<span class="input-group-addon">Name</span>
 						<input type="text" class="form-control" placeholder="">
 					</div>
-					<div class="menu_button">
-						New property <i class="fa fa-plus-square add_property" id="add_field_property"></i>
+					<div id="add_field_property" class="menu_button">
+						New property <i class="fa fa-plus-square add_property"></i>
 					</div>
 					<br>
 					<!--<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>-->
@@ -95,9 +104,11 @@
 						</fieldset>
 					</form>
 				</div>
-				<div id="json_properties" class="sub_menu">
+				<hr>
+				<div id="json_properties">
 					<h5>Global Properties</h5>
 					<i class="fa fa-plus-square add_property menu_button" id="add_json_property"></i>New<br>
+					<br>
 					<form>
 						<fieldset>
 						

@@ -5,6 +5,12 @@ Mitchell Lee
 10-7-13
 */
 
+/*
+
+	Global CSS
+
+*/
+
 .ui-dialog, .ui-front {
 	/* makes dialog boxes appear above other elements, 
 	also makes the background inactive while a dialog
@@ -18,14 +24,26 @@ Mitchell Lee
 	margin-left: 5px;
 }
 
+.sub_menu {
+	border: 1px solid black;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+/*
+
+	Toolbar elements
+	
+*/
+
+.menu_shape {
+	display: inline-block;
+}
+
 #page_title {
 	display: inline-block;
 	text-align: center;
 	vertical-align: middle;
-}
-
-legend {
-	margin-bottom: 5px;
 }
 
 #file_browse {
@@ -36,19 +54,47 @@ legend {
 	visibility: hidden;
 }
 
-.menu_shape {
-	display: inline-block;
-}
-
 #copy_shape {
 	vertical-align:middle;
 	float: right;
 }
 
-.sub_menu {
-	border: 1px solid black;
+/*
+
+	Properties Menu/Viewing Menu elements
+
+*/
+
+hr {
+	height: 1px; 
+	background-color: grey;
+}
+
+.selected_shape {
+	position: absolute;
+	opacity: 1;
+	background-color: green;
+}
+
+.add_property {
+	margin-right: 10px;
+}
+
+.menu_button:hover{
+	background-color: grey;
+}
+
+.shape_prop_label {
+	width: 80px;
+}
+
+.shape_property {
+	width: 6em !important;
+}
+
+#properties_menu {
 	text-align: center;
-	padding-bottom: 10px;
+	border: 1px solid black;
 }
 
 #shapes_menu .square_item{
@@ -92,6 +138,47 @@ legend {
 	cursor: move;
 }
 
+/* 
+
+	Dialog elements
+
+*/
+
+.step {
+	display: inline-block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.step p {
+	width: 250px;
+	float: left;
+	vertical-align: middle;
+}
+
+.input-group, .input-group-sm {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+.input_text {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.dialog_input {
+	margin-left: 10px;
+	float: right;
+	width: 10em;
+}
+
+.form-control[readonly] {
+	/* overrides default grey background for the input box */
+	background-color: white;
+}
+
 #json_text {
 	height: 200px;
 	width: 400px;
@@ -106,62 +193,6 @@ legend {
 	float: left;
 }
 
-.step {
-	display: inline-block;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-.step p {
-	width: 250px;
-	float: left;
-	vertical-align: middle;
-}
-
 #help_dialog img {
 	float: right;
-}
-
-.add_property {
-	margin-right: 10px;
-}
-
-.dropdown-menu {
-	margin: auto;
-}
-
-.menu_button:hover{
-	background-color: grey;
-}
-
-.selected_shape {
-	position: absolute;
-	opacity: 1;
-	background-color: green;
-}
-
-.input-group, .input-group-sm {
-	margin: 5px;
-}
-
-.input_text {
-	margin-left: 10px;
-	margin-right: 5px;
-}
-
-.shape_prop_input {
-	margin-right: 10px;
-	float: right;
-	width: 5em;
-}
-
-.dialog_input {
-	margin-left: 10px;
-	float: right;
-	width: 10em;
-}
-
-.form-control[readonly] {
-	/* overrides default grey background for the input box */
-	background-color: white;
 }

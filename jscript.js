@@ -1,10 +1,14 @@
 // JavaScript file
 
 var update_shape_menu = function(curr) {
-					$('#x_pos').val(Math.floor(curr.position().left + (curr.width() / 2.0)))
-					$('#y_pos').val(Math.floor(curr.position().top + (curr.height() / 2.0)))
-					$('#shape_width').val(Math.floor(curr.width()))
-					$('#shape_height').val(Math.floor(curr.height()))
+					var x_pos = Math.floor(curr.position().left + (curr.width() / 2.0));
+					$("#x_pos").val(x_pos).data("val", x_pos);
+					
+					var y_pos = Math.floor(curr.position().top + (curr.height() / 2.0));
+					$("#y_pos").val(y_pos).data("val", y_pos);
+
+					$("#shape_width").val(Math.floor(curr.width()));
+					$("#shape_height").val(Math.floor(curr.height()));
 				}
 				
 var update_udef_menu = function(curr) {
@@ -200,6 +204,89 @@ $(function() {
 	$("#shape_type li a").on("click",
 		function() {
 			$("#shape_type_label").html($(this).text() +' <span class="caret"></span>');
+		}
+	);
+	
+	/* event handlers for the shape position input boxes */
+	$("#x_pos").on("change",
+		function(e) {
+			if (isNaN($("#x_pos").val()) || $("#x_pos").val() < 0) {
+				// Error case: x value was invalid
+				$("#x_pos").val($("#y_pos").data("val"));
+			} 
+			var largest_x = parseInt($("#x_pos").val()) + ($(".selected_shape").width() / 2);
+			var smallest_x = parseInt($("#x_pos").val()) - ($(".selected_shape").width() / 2);
+			
+			if (largest_x < $("#viewing_window img").width() && smallest_x > 0) {
+				// Valid x value
+				$(".selected_shape").css({left: largest_x - $(".selected_shape").width()});
+				$("#x_pos").data("val", $("#x_pos").val());
+			} else {
+				// Error case: x value was larger or smaller than the 
+				// allowed x values, reset it to the original value
+				$("#x_pos").val($("#x_pos").data("val"));
+			}
+		}
+	);
+	
+	$("#y_pos").on("change",
+		function() {
+			if (isNaN($("#y_pos").val()) || $("#y_pos").val() < 0) {
+				// Error case: y value was invalid, reset it to the original value
+				$("#y_pos").val($("#y_pos").data("val"));
+			} 
+			var largest_y = parseInt($("#y_pos").val()) + ($(".selected_shape").height() / 2);
+			var smallest_y = parseInt($("#y_pos").val()) - ($(".selected_shape").height() / 2);
+			
+			if (largest_y < $("#viewing_window img").width() && smallest_y > 0) {
+				// Valid y value
+				$(".selected_shape").css({top: largest_y - $(".selected_shape").height()});
+				$("#y_pos").data("val", $("#y_pos").val());
+			} else {
+				// Error case: y value was larger or smaller than the
+				// allowed y values, reset it to the original value
+				$("#y_pos").val($("#y_pos").data("val"));
+			}
+		}
+	);
+	
+	$("#shape_width").on("change",
+		function() {
+			if (isNaN($("#shape_width").val()) || $("#shape_width").val() < 0) {
+				// Error case: width value was invalid
+				$("#shape_width").val($(".selected_shape").width());
+			} 
+			var new_width = parseInt($("#shape_width").val());
+			var largest_x = $(".selected_shape").position().left + new_width;
+			
+			if (largest_x < $("#viewing_window img").width()) {
+				// Valid width value
+				$(".selected_shape").width(new_width)
+			} else {
+				// Error case: width value larger than the maximum width value
+				// allowed, reset it to the original value
+				$("#shape_width").val($(".selected_shape").width());
+			}
+		}
+	);
+	
+	$("#shape_height").on("change",
+		function() {
+			if (isNaN($("#shape_height").val()) || $("#shape_height").val() < 0) {
+				// Error case: height value was invalid
+				$("#shape_height").val($(".selected_shape").width());
+			} 
+			var new_height = parseInt($("#shape_height").val());
+			var largest_y = $(".selected_shape").position().top + new_height;
+			
+			if (largest_y < $("#viewing_window img").height()) {
+				// Valid height value
+				$(".selected_shape").height(new_height)
+			} else {
+				// Error case: height value larger than the maximum height value
+				// allowed, reset it to the original value
+				$("#shape_height").val($(".selected_shape").height());
+			}
 		}
 	);
 	
@@ -480,7 +567,6 @@ $(function() {
 					$(".selected_shape").removeClass("selected_shape");
 					$(this).addClass("selected_shape");
 					update_shape_menu($(this));
-					console.log("shape being resized!");
 				}
 			);
 
