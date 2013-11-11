@@ -76,10 +76,6 @@ hr {
 	background-color: green;
 }
 
-.add_property {
-	margin-right: 10px;
-}
-
 .menu_button:hover{
 	background-color: grey;
 }
@@ -190,6 +186,10 @@ hr {
 }
 
 #field_label {
+	float: left;
+}
+
+#global_label {
 	float: left;
 }
 

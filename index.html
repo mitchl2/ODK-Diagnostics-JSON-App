@@ -77,7 +77,7 @@
 					
 				</div>
 				<hr>
-				<div id="user_defined_properties">
+				<div id="field_properties">
 					<h5>Field Properties</h5>
 					<div class="btn-group" id="shape_type">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="shape_type_label">Type <span class="caret"></span>
@@ -91,13 +91,14 @@
 					<br>
 					<div class="input-group input-group-sm">
 						<span class="input-group-addon">Name</span>
-						<input type="text" class="form-control" placeholder="">
-					</div>
-					<div id="add_field_property" class="menu_button">
-						New property <i class="fa fa-plus-square add_property"></i>
+						<input id="Name" type="text" class="form-control" placeholder="" readonly>
+						<span class="input-group-addon"><i id="edit_name" class="fa fa-pencil fa-sm"></i></span>
 					</div>
 					<br>
-					<!--<i class="fa fa-check-square menu_button" id="update_udef_prop"></i> Save<br><br>-->
+					<div id="add_field_property" class="menu_button">
+						New property <i class="fa fa-plus-square"></i>
+					</div>
+					<br>
 					<form>
 						<fieldset>
 						
@@ -105,15 +106,18 @@
 					</form>
 				</div>
 				<hr>
-				<div id="json_properties">
-					<h5>Global Properties</h5>
-					<i class="fa fa-plus-square add_property menu_button" id="add_json_property"></i>New<br>
+				<div id="global_properties">
+					<h5>Global Properties</h5>				
+					<div id="add_global_property" class="menu_button">
+						New property <i class="fa fa-plus-square"></i>
+					</div>
 					<br>
 					<form>
 						<fieldset>
 						
 						</fieldset>
 					</form>	
+					<br>
 				</div>
 			</div>
 			<!-- issue: shapes can be dragged outside the bounds of the image in the viewing window because the
@@ -131,22 +135,31 @@
 	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
 	<div id="field_prop_dialog" title="Create field property">
 		<label for="name">Name</label>
-		<input type="text" name="name" id="new_field_prop" class="text ui-widget-content ui-corner-all dialog_input" />
+		<input type="text" name="name" id="new_field_prop_label" class="text ui-widget-content ui-corner-all dialog_input" />
 		<br>
 		<label for="name">Value</label>
 		<input type="text" name="name" id="new_field_prop_val" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 	
-	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
+	<!-- this dialog menu is opened when an edit field icon is clicked -->
 	<div id="update_field_dialog" title="Update field property">
 		<label id="field_label" for="name"></label>
-		<input type="text" name="name" id="curr_value" class="text ui-widget-content ui-corner-all dialog_input" />
+		<input type="text" name="name" id="new_field_val" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 
-	<!-- this dialog menu is opened when the add_json_property icon is clicked -->
-	<div id="json_prop_dialog" title="Create global property">
-		<label for="name">Property name</label>
-		<input type="text" name="name" id="new_global_prop" class="text ui-widget-content ui-corner-all dialog_input" />
+	<!-- this dialog menu is opened when the add_global_property icon is clicked -->
+	<div id="global_prop_dialog" title="Create global property">
+		<label id="global_dialog_label" for="name">Name</label>
+		<input type="text" name="name" id="new_global_prop_label" class="text ui-widget-content ui-corner-all dialog_input" />
+		<br>
+		<label for="name">Value</label>
+		<input type="text" name="name" id="new_global_prop_val" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+		
+	<!-- this dialog menu is opened when an edit global icon is clicked -->
+	<div id="update_global_dialog" title="Update global property">
+		<label id="global_label" for="name"></label>
+		<input type="text" name="name" id="new_global_val" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 	
 	<!-- this dialog menu is opened when the make_json icon is clicked -->
