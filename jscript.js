@@ -265,7 +265,7 @@ $(function() {
 			var largest_y = parseInt($("#y_pos").val()) + ($(".selected_shape").height() / 2);
 			var smallest_y = parseInt($("#y_pos").val()) - ($(".selected_shape").height() / 2);
 			
-			if (largest_y < $("#viewing_window img").width() && smallest_y > 0) {
+			if (largest_y < $("#viewing_window img").height() && smallest_y > 0) {
 				// Valid y value
 				$(".selected_shape").css({top: largest_y - $(".selected_shape").height()});
 				$("#y_pos").data("val", $("#y_pos").val());
