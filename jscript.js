@@ -351,8 +351,10 @@ $(function() {
 				);
 				
 				$new_prop.append($prop_label).append($input).append($edit).append($delete);
-				
 				$("#field_properties fieldset").append($new_prop);
+				
+				// add the new property to the selected shape
+				$(".selected_shape").data($("#new_field_prop_label").val(), $("#new_field_prop_val").val());
 
 				$delete.on("click",
 					function() {
