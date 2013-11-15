@@ -49,6 +49,17 @@ var set_margin = function() {
 					$("#viewing_window").css("margin-left", window_offset);
 				}
 			}
+
+/* Creates a text file and downloads the file when the function is called.
+NOTE: this code relies on an HTML5 compatible browser.
+This function is from the following stackoveflow post: http://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server		
+*/	
+var download = function (filename, text) {
+				var pom = document.createElement('a');
+				pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+				pom.setAttribute('download', filename);
+				pom.click();
+			}
 				
 var curr = 0; // current shape number
 var max_window_width = 0; // used to set a max size on the viewing window
@@ -575,6 +586,12 @@ $(function() {
 			json_output += "\n}";
 			$("#json_text").val(json_output);
 			$("#create_json_dialog").dialog("open");
+		}
+	);
+	
+	$("#download_json").on("click",
+		function() {
+			download("odk_output.json", $("#json_text").val());
 		}
 	);
 
