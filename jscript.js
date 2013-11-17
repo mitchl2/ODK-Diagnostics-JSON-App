@@ -32,7 +32,7 @@ var update_field_menu = function(curr) {
 					// respective values for the current shape
 					$(".field_property").each(
 						function() {
-							$(this).val(curr.data($(this).attr("id")));
+							$(this).val(curr.data($(this).data("label")));
 						}
 					);
 				}
@@ -49,10 +49,85 @@ var set_margin = function() {
 					$("#viewing_window").css("margin-left", window_offset);
 				}
 			}
+
+var make_global = function(g_name, g_val) {
+				var $new_prop = $("<div/>").addClass("input-group input-group-sm");		
+				var $prop_label = $("<span/>").addClass("input-group-addon").text(g_prop);
+				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
+				$input.addClass("global_property").addClass("form-control").val(g_val);
+				$input.data("label", g_prop);
+				
+				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
+				
+				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
+				$edit.on("click",
+					function() {
+						console.log("edit: " + $prop_label.text());
+						$input.addClass("selected_global");
+						$("#global_label").text($prop_label.text());
+						$("#new_global_val").val($input.val());
+						$("#update_global_dialog").dialog("open");
+					}
+				);
+				
+				$new_prop.append($prop_label).append($input).append($edit).append($delete);
+				
+				$("#global_properties fieldset").append($new_prop);
+
+				$delete.on("click",
+					function() {
+						$new_prop.remove();
+						$(this).remove();
+					}
+				);				
+			}
+	
+var make_field = function(f_prop) {
+				var $new_prop = $("<div/>").addClass("input-group input-group-sm");		
+				var $prop_label = $("<span/>").addClass("input-group-addon").text(f_prop);
+				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
+				$input.addClass("field_property").addClass("form-control");
+				$input.data("label", f_prop);
+				
+				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
+				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
+				
+				$edit.on("click",
+					function() {
+						$input.addClass("selected_global");
+						$("#field_label").text($prop_label.text());
+						$("#new_field_val").val($input.val());
+						$("#update_global_dialog").dialog("open");
+					}
+				);
+				
+				$new_prop.append($prop_label).append($input).append($edit).append($delete);
+				
+				$("#field_properties fieldset").append($new_prop);
+
+				$delete.on("click",
+					function() {
+						$new_prop.remove();
+						$(this).remove();
+					}
+				);				
+			}
 			
 var parse_input = function(js_text) {
-				
-
+			for (g_prop in js_text) {
+				if (g_prop == "width" || g_prop == "height" || g_prop == "fields") {
+					continue; // ASSUMES picture already loaded
+				} else if (g_prop == "field_labels") {
+					var fields = js_text[g_prop];
+					for (curr in fields) {
+						var f_prop = fields[curr];
+						make_field(f_prop);
+					}
+				} else {
+					console.log(g_prop + ": " + js_text[g_prop]);
+					make_global(g_prop, js_text[g_prop]);
+				}
+			}
 		}
 
 /* Creates a text file and downloads the file when the function is called.
@@ -351,10 +426,10 @@ $(function() {
 				
 				var $new_prop = $("<div/>").addClass("input-group input-group-sm");
 				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_field_prop_label").val());
-				
 				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
 				$input.addClass("field_property").addClass("form-control").val($("#new_field_prop_val").val());
-				
+				$input.data("label", $("#new_field_prop_label").val());
+		
 				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
 				
 				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
@@ -556,7 +631,6 @@ $(function() {
 			$("#load_json_dialog").dialog("open");
 		}
 	);
-	
 
 	/*
 		JSON Output Generator
@@ -564,67 +638,63 @@ $(function() {
 	
 	$("#make_json").click(
 		function() {
-			var json_output = "{\n";
+			var json_output = {};
 			
 			/* add all JSON file properties to the output */
 			$(".global_property").each(
-				function(index) {
-					json_output += "\t\"" + $(this).data("label") + "\":\"" + $(this).val() + "\",\n";
+				function() {
+					json_output[$(this).data("label")] = $(this).val();
 				}
-			);
+			);	
 			
 			/* add image height and width to JSON */
-			json_output += "\t\"width\":" + "\"" + $("#viewing_window img").width() + "\",\n";
-			json_output += "\t\"height\":" + "\"" + $("#viewing_window img").height() + "\",\n";
-			
-			json_output += "\t\"fields\": ";
-			
+			json_output["width"] = $("#viewing_window img").width();
+			json_output["height"] = $("#viewing_window img").height();
+
+			/* create an array of objects for all shapes */
 			var shape_array = [];
-			
-			/* create an array of records for the shape and field properties for each shape */
+			var field_labels = [];
+
 			$(".shape").each(
 				function(index) {
-					var curr_tuple = [];
+					var curr_tuple = {};
 					var field_data = $(this).data()
 					
 					// determine shape type, NOTE: assumes shape type is either a square or circle
 					var shape_type = $(this).hasClass("square_item") ? "square" : "circle";
-					curr_tuple.push("\"shape\":\"" + shape_type + "\"");
+					curr_tuple["shape"] = shape_type;
 					
 					/* iterate over all user defined properties */
 					for (ele in field_data) {
 						if (ele != 'uiDraggable' &&  ele != 'uiResizable') {
-							curr_tuple.push("\"" + ele + "\":\"" + field_data[ele] + "\"");
+							if (field_labels.indexOf(ele) == -1) {
+								field_labels.push(String(ele));
+							}
+							curr_tuple[ele] = field_data[ele];
 						}
 					}
 					
 					/* add all shape properties to the tuple, NOTE: rounding all values down*/
-					curr_tuple.push("\"x\":\"" + Math.floor($(this).position().left + ($(this).width() / 2.0)) + "\"");
-					curr_tuple.push("\"y\":\"" + Math.floor($(this).position().top + ($(this).height() / 2.0)) + "\"");
+					curr_tuple["x"] = Math.floor($(this).position().left + ($(this).width() / 2.0));
+					curr_tuple["y"] = Math.floor($(this).position().top + ($(this).height() / 2.0))
 					
 					/* NOTE: assumes that shape is either a square or circle */
 					if ($(this).hasClass("square_item")) {
-						curr_tuple.push("\"width\":\"" + Math.floor($(this).width()) + "\"");
-						curr_tuple.push("\"height\":\"" + Math.floor($(this).height()) + "\"");
+						curr_tuple["width"] = Math.floor($(this).width());
+						curr_tuple["height"] = Math.floor($(this).height());
+						
 					} else {
-						curr_tuple.push("\"radius\":\"" + Math.floor($(this).width() / 2.0) + "\"");
+						curr_tuple["radius"] = Math.floor($(this).width() / 2.0);
 					}
 					
-					shape_array.push("{" + curr_tuple + "}");
+					shape_array.push(curr_tuple);
 				}
 			);
+
+			json_output["fields"] = shape_array;
+			json_output["field_labels"] = field_labels;
 			
-			json_output += "[";
-			for (var i = 0; i < shape_array.length; i++) {
-				json_output += shape_array[i];
-				if (i != shape_array.length - 1) {
-					json_output += ",\n\t\t";
-				}
-			}
-			json_output += "]";
-			
-			json_output += "\n}";
-			$("#json_output_text").val(json_output);
+			$("#json_output_text").val(JSON.stringify(json_output, null, "\t"));
 			$("#create_json_dialog").dialog("open");
 		}
 	);
