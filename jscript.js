@@ -12,6 +12,7 @@ var update_shape_menu = function(curr) {
 				}
 				
 var update_field_menu = function(curr) {
+					console.log(curr.data());
 					// check if the current shape has a name
 					if ("Name" in curr.data()) {
 						$("#Name").val(curr.data("Name"));
@@ -113,20 +114,102 @@ var make_field = function(f_prop) {
 				);				
 			}
 			
+var make_shape = function(curr_shape) {
+			var $new_shape;
+			
+			if (curr_shape["shape"] == "square") {
+				$new_shape = $("<div/>").addClass("square_item").addClass("shape");
+			} else {
+				$new_shape = $("<div/>").addClass("circle_item").addClass("shape");
+			} 
+			
+			var lock_ratio = $new_shape.hasClass("circle_item");
+			$new_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
+					.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
+					
+			console.log(curr_shape);	
+			
+			/* set shape callback functions */
+			$new_shape.on("click",
+				function(event, ui) {
+					$(".selected_shape").removeClass("selected_shape");
+					$(this).addClass("selected_shape");
+					update_shape_menu($new_shape);
+					update_field_menu($new_shape);
+				}
+			);
+			
+			$new_shape.on("drag",
+				function() {
+					$(".selected_shape").removeClass("selected_shape");
+					$(this).addClass("selected_shape");
+					update_shape_menu($new_shape);
+				}
+			);
+			
+			$new_shape.on("resize",
+				function() {
+					$(".selected_shape").removeClass("selected_shape");
+					$(this).addClass("selected_shape");
+					update_shape_menu($new_shape);
+				}
+			);
+
+			$new_shape.on("dblclick",
+				function() {
+					$(this).remove();
+					$(".shape_property").val(null);
+					$(".field_property").val(null);
+				}
+			);
+			
+			$new_shape.appendTo("#viewing_window");
+	
+			if ($new_shape.hasClass("circle_item")) {
+				$new_shape.width(curr_shape["radius"] * 2);
+				$new_shape.height(curr_shape["radius"] * 2);
+				
+				$new_shape.css({top: curr_shape["y"] - curr_shape["radius"],
+								left: curr_shape["x"] - curr_shape["radius"]});
+			} else {
+				$new_shape.width(curr_shape["width"]);
+				$new_shape.height(curr_shape["height"]);
+				
+				$new_shape.css({top: curr_shape["y"] - (curr_shape["height"] / 2.0),
+								left: curr_shape["x"] - (curr_shape["width"] / 2.0)});
+			}	
+			
+			/* iterate over all user defined properties */
+			for (ele in curr_shape) {
+				if (ele != 'uiDraggable' &&  ele != 'uiResizable') {
+					$new_shape.data(ele, curr_shape[ele]);
+				}
+			}
+		}
+			
 var parse_input = function(js_text) {
 			for (g_prop in js_text) {
-				if (g_prop == "width" || g_prop == "height" || g_prop == "fields") {
+				if (g_prop == "width" || g_prop == "height") {
 					continue; // ASSUMES picture already loaded
+				} else if(g_prop == "fields") {
+					continue; // process all fields below
 				} else if (g_prop == "field_labels") {
 					var fields = js_text[g_prop];
 					for (curr in fields) {
 						var f_prop = fields[curr];
+						console.log(f_prop);
 						make_field(f_prop);
 					}
 				} else {
 					console.log(g_prop + ": " + js_text[g_prop]);
 					make_global(g_prop, js_text[g_prop]);
 				}
+			}
+			
+			var shapes = js_text["fields"];
+			
+			for (index in shapes) {
+				make_shape(shapes[index]);
 			}
 		}
 
