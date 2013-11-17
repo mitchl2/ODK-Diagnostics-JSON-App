@@ -337,7 +337,7 @@ $(function() {
 		Initiate Dialog windows
 	*/
 	
-	// Shape properties dialog
+	// Fields dialog
 	$("#field_prop_dialog").dialog({
 		autoOpen: false,
 		modal: true,
@@ -353,7 +353,7 @@ $(function() {
 				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_field_prop_label").val());
 				
 				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
-				$input.addClass("field_property").addClass("form-control").val($("#new_field_prop_val").val()).attr("id", $("#new_field_prop_label").val());
+				$input.addClass("field_property").addClass("form-control").val($("#new_field_prop_val").val());
 				
 				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
 				
@@ -422,7 +422,7 @@ $(function() {
 		}
 	);
 	
-	// JSON properties dialog
+	// Global properties dialog
 	$("#global_prop_dialog").dialog({
 		autoOpen: false,
 		modal: true,
@@ -438,7 +438,8 @@ $(function() {
 				var $prop_label = $("<span/>").addClass("input-group-addon").text($("#new_global_prop_label").val());
 				
 				var $input = $("<input/>").attr("type", "text").attr("readonly", true);
-				$input.addClass("global_property").addClass("form-control").val($("#new_global_prop_val").val()).attr("id", $("#new_global_prop_label").val());
+				$input.addClass("global_property").addClass("form-control").val($("#new_global_prop_val").val())
+				$input.data("label", $("#new_global_prop_label").val());
 				
 				var $delete = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-times-circle fa-sm"));
 				
@@ -568,7 +569,7 @@ $(function() {
 			/* add all JSON file properties to the output */
 			$(".global_property").each(
 				function(index) {
-					json_output += "\t\"" + $(this).attr("id") + "\":\"" + $(this).val() + "\",\n";
+					json_output += "\t\"" + $(this).data("label") + "\":\"" + $(this).val() + "\",\n";
 				}
 			);
 			
