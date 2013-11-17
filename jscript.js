@@ -96,14 +96,13 @@ var make_field = function(f_prop) {
 				$edit.on("click",
 					function() {
 						$input.addClass("selected_global");
-						$("#field_label").text($prop_label.text());
+						$("#field_label").text($input.data("label"));
 						$("#new_field_val").val($input.val());
-						$("#update_global_dialog").dialog("open");
+						$("#update_field_dialog").dialog("open");
 					}
 				);
 				
-				$new_prop.append($prop_label).append($input).append($edit).append($delete);
-				
+				$new_prop.append($prop_label).append($input).append($edit).append($delete);				
 				$("#field_properties fieldset").append($new_prop);
 
 				$delete.on("click",
@@ -114,7 +113,7 @@ var make_field = function(f_prop) {
 				);				
 			}
 			
-var make_shape = function(curr_shape) {
+var make_shape = function(curr_shape, resize_ratio) {
 			var $new_shape;
 			
 			if (curr_shape["shape"] == "square") {
@@ -126,9 +125,7 @@ var make_shape = function(curr_shape) {
 			var lock_ratio = $new_shape.hasClass("circle_item");
 			$new_shape.draggable({helper: "invalid", containment: "parent", position: "absolute"})
 					.resizable({containment: "parent", position: "absolute", handles: "all", aspectRatio: lock_ratio});
-					
-			console.log(curr_shape);	
-			
+
 			/* set shape callback functions */
 			$new_shape.on("click",
 				function(event, ui) {
@@ -166,17 +163,17 @@ var make_shape = function(curr_shape) {
 			$new_shape.appendTo("#viewing_window");
 	
 			if ($new_shape.hasClass("circle_item")) {
-				$new_shape.width(curr_shape["radius"] * 2);
-				$new_shape.height(curr_shape["radius"] * 2);
+				$new_shape.width(curr_shape["radius"] * 2 * resize_ratio);
+				$new_shape.height(curr_shape["radius"] * 2 * resize_ratio);
 				
-				$new_shape.css({top: curr_shape["y"] - curr_shape["radius"],
-								left: curr_shape["x"] - curr_shape["radius"]});
+				$new_shape.css({top: (curr_shape["y"] - curr_shape["radius"]) * resize_ratio,
+								left: (curr_shape["x"] - curr_shape["radius"]) * resize_ratio});
 			} else {
-				$new_shape.width(curr_shape["width"]);
-				$new_shape.height(curr_shape["height"]);
+				$new_shape.width(curr_shape["width"] * resize_ratio);
+				$new_shape.height(curr_shape["height"] * resize_ratio);
 				
-				$new_shape.css({top: curr_shape["y"] - (curr_shape["height"] / 2.0),
-								left: curr_shape["x"] - (curr_shape["width"] / 2.0)});
+				$new_shape.css({top: (curr_shape["y"] - (curr_shape["height"] / 2.0)) * resize_ratio,
+								left: (curr_shape["x"] - (curr_shape["width"] / 2.0)) * resize_ratio});
 			}	
 			
 			/* iterate over all user defined properties */
@@ -188,6 +185,8 @@ var make_shape = function(curr_shape) {
 		}
 			
 var parse_input = function(js_text) {
+			var shape_state = ["shape", "x", "y", "width", "height", "radius", "shape_type", "Name"];
+			
 			for (g_prop in js_text) {
 				if (g_prop == "width" || g_prop == "height") {
 					continue; // ASSUMES picture already loaded
@@ -197,19 +196,24 @@ var parse_input = function(js_text) {
 					var fields = js_text[g_prop];
 					for (curr in fields) {
 						var f_prop = fields[curr];
-						console.log(f_prop);
-						make_field(f_prop);
+						if (shape_state.indexOf(f_prop) == -1) {
+							make_field(f_prop);
+						}
 					}
 				} else {
-					console.log(g_prop + ": " + js_text[g_prop]);
 					make_global(g_prop, js_text[g_prop]);
 				}
 			}
 			
 			var shapes = js_text["fields"];
 			
+			var resize_ratio = 1;
+			if($("#viewing_window img").width() != js_text["width"]) {
+				resize_ratio = 1.0 * $("#viewing_window img").width() / js_text["width"];
+			}
+
 			for (index in shapes) {
-				make_shape(shapes[index]);
+				make_shape(shapes[index], resize_ratio);
 			}
 		}
 
@@ -574,8 +578,9 @@ $(function() {
 	
 	$("#edit_name").on("click",
 		function() {
+			$("#Name").addClass("selected_field");
 			$("#field_label").text("Name");
-			$("#new_field_val").val($("#shape_name").val());
+			$("#new_field_val").val($("#Name").val());
 			$("#update_field_dialog").dialog("open");
 		}
 	);
@@ -695,6 +700,11 @@ $(function() {
 			"Ok": function() {
 				try {
 					var js_input = JSON.parse($("#json_input_text").val());
+					// remove current globals and fields before parsing
+					$("#global_properties fieldset").empty();
+					$("#field_properties fieldset").empty();
+					$(".shape").remove();
+					
 					parse_input(js_input);
 				} catch(e) {
 					// TODO: add appropriate error message dialog
