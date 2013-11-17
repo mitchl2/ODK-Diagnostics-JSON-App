@@ -49,6 +49,11 @@ var set_margin = function() {
 					$("#viewing_window").css("margin-left", window_offset);
 				}
 			}
+			
+var parse_input = function(js_text) {
+				
+
+		}
 
 /* Creates a text file and downloads the file when the function is called.
 NOTE: this code relies on an HTML5 compatible browser.
@@ -355,6 +360,7 @@ $(function() {
 				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
 				$edit.on("click",
 					function() {
+						$input.addClass("selected_field");
 						$("#field_label").text($prop_label.text());
 						$("#new_field_val").val($input.val());
 						$("#update_field_dialog").dialog("open");
@@ -400,8 +406,9 @@ $(function() {
 		width: 'auto',
 		buttons: {
 			"Ok": function() {
-				$("#" + $("#field_label").text()).val($("#new_field_val").val());
+				$(".selected_field").val($("#new_field_val").val());
 				$(".selected_shape").data($("#field_label").text(), $("#new_field_val").val());
+				$(".selected_field").removeClass("selected_field");
 				$(this).dialog("close");
 			}
 		}
@@ -438,6 +445,7 @@ $(function() {
 				var $edit = $("<span/>").addClass("input-group-addon").append($("<i/>").addClass("fa fa-pencil fa-sm"));
 				$edit.on("click",
 					function() {
+						$input.addClass("selected_global");
 						$("#global_label").text($prop_label.text());
 						$("#new_global_val").val($input.val());
 						$("#update_global_dialog").dialog("open");
@@ -482,7 +490,8 @@ $(function() {
 		width: 'auto',
 		buttons: {
 			"Ok": function() {
-				$("#" + $("#global_label").text()).val($("#new_global_val").val());
+				$(".selected_global").val($("#new_global_val").val());
+				$(".selected_global").removeClass("selected_global");
 				$(this).dialog("close");
 			}
 		}
@@ -518,6 +527,36 @@ $(function() {
 		}
 	);
 	
+	// JSON load dialog
+	$("#load_json_dialog").dialog({
+		autoOpen: false,
+		modal: true,
+		width: 'auto',
+		buttons: {
+			"Ok": function() {
+				try {
+					var js_input = JSON.parse($("#json_input_text").val());
+					parse_input(js_input);
+				} catch(e) {
+					// TODO: add appropriate error message dialog
+					alert(e);
+				}
+				$(this).dialog("close");
+			},			
+			"Cancel": function() {
+				$("#json_load_text").val(null)
+				$(this).dialog("close");
+			}
+		}
+	});
+	
+	$("#load_json").on("click",
+		function() {
+			$("#load_json_dialog").dialog("open");
+		}
+	);
+	
+
 	/*
 		JSON Output Generator
 	*/
@@ -584,17 +623,17 @@ $(function() {
 			json_output += "]";
 			
 			json_output += "\n}";
-			$("#json_text").val(json_output);
+			$("#json_output_text").val(json_output);
 			$("#create_json_dialog").dialog("open");
 		}
 	);
 	
 	$("#download_json").on("click",
 		function() {
-			download("odk_output.json", $("#json_text").val());
+			download("odk_output.json", $("#json_output_text").val());
 		}
 	);
-
+	
 	/*
 		Initialize draggables and droppables
 	*/

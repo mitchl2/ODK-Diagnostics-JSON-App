@@ -46,7 +46,8 @@
 			</div>
 			<div id="create_json" class=" sub_menu main_row col-md-2 col-xs-3">
 				<h4>Create JSON</h4>
-				<button id="make_json" class="ui-state-default">Generate JSON File</button>
+				<button id="make_json" class="ui-state-default">Generate JSON</button>
+				<button id="load_json" class="ui-state-default">Load JSON</button>
 			</div>
 			<div id="help" class=" sub_menu main_row col-md-2 col-xs-3">
 				<h4>About</h4>
@@ -164,7 +165,7 @@
 	
 	<!-- this dialog menu is opened when the make_json icon is clicked -->
 	<div id="create_json_dialog" title="Generated JSON File">
-		<textarea id="json_text" readonly></textarea>
+		<textarea id="json_output_text" readonly></textarea>
 		<button id="download_json">Download</button>
 	</div>
 	
@@ -190,6 +191,12 @@
 			<p>After placing and resizing the appropriate shapes onto the image, click the Generate JSON File.</p>
 			<img src="help/json_menu.PNG">
 		</div>
+	</div>
+	
+	<!-- this dialog menu is opened when the load json button is clicked -->
+	<div id="load_json_dialog" title="Insert JSON text">
+		<p>Paste your text JSON output into the textbox below and click "Load".</p>
+		<textarea id="json_input_text"></textarea>
 	</div>
 	
 	<!-- this dialog menu is opened when an edit-field button is clicked
