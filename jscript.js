@@ -757,10 +757,12 @@ $(function() {
 					var shape_type = $(this).hasClass("square_item") ? "square" : "circle";
 					curr_tuple["shape"] = shape_type;
 					
+					var shape_state = ["shape", "x", "y", "width", "height", "radius", "shape_type", "Name"];
+					
 					/* iterate over all user defined properties */
 					for (ele in field_data) {
 						if (ele != 'uiDraggable' &&  ele != 'uiResizable') {
-							if (field_labels.indexOf(ele) == -1) {
+							if (field_labels.indexOf(ele) == -1 && shape_state.indexOf(ele) == -1) {
 								field_labels.push(String(ele));
 							}
 							curr_tuple[ele] = field_data[ele];
