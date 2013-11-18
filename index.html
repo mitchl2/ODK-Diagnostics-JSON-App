@@ -36,13 +36,13 @@
 					<option value="sample_images/SD_Malaria.jpg">SD Malaria</option>
 				</select>
 				<br>
-				<i class="fa fa-minus-square remove_image"></i><span class="remove_image"> Remove image</span>
+				<span id="remove_image">Remove image <i class="fa fa-minus-square remove_image"></i></span>
 			</div>
 			<div id="shapes_menu" class=" sub_menu main_row col-md-2 col-xs-3">
 				<h4>Shapes</h4>
 					<div id="make_box" class="menu_shape square_item"></div>
 					<div id="make_circle" class="menu_shape circle_item"></div>
-					<button id="copy_shape">Copy</button>	
+					<button id="copy_shape" class="ui-state-default">Copy</button>	
 			</div>
 			<div id="create_json" class=" sub_menu main_row col-md-2 col-xs-3">
 				<h4>Create JSON</h4>
@@ -194,19 +194,8 @@
 	</div>
 	
 	<!-- this dialog menu is opened when the load json button is clicked -->
-	<div id="load_json_dialog" title="Insert JSON text">
+	<div id="load_json_dialog" title="Load JSON File">
 		<p>Paste your text JSON output into the textbox below and click "Load".</p>
 		<textarea id="json_input_text"></textarea>
-	</div>
-	
-	<!-- this dialog menu is opened when an edit-field button is clicked
-	<div id="edit_field_dialog" title="Help">
-		<label for="name">Name</label>
-		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
-		<br>
-		<br>
-		<label for="name">Value</label>
-		<input type="text" name="name" id="new_udef_prop" class="text ui-widget-content ui-corner-all" />
-	</div>-->
-	
+	</div>	
 </html>

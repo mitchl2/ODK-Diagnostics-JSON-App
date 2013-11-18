@@ -281,7 +281,7 @@ $(function() {
 				if ($("#viewing_window img")) {
 					$("#viewing_window img").remove();
 					$("#viewing_window .shape").remove();
-					$(".remove_image").css('visibility', 'hidden');
+					$("#remove_image").css('visibility', 'hidden');
 					$("#viewing_window").droppable("disable");
 				}
 			} else {
@@ -293,7 +293,7 @@ $(function() {
 							$("#viewing_window .shape").remove();
 						}
 						$(img).css("border", "1px solid black");
-						$(".remove_image").css('visibility', 'visible');
+						$("#remove_image").css('visibility', 'visible');
 						$("#viewing_window").droppable("enable");
 						$("#viewing_window").width(img.width);
 						$("#viewing_window").height(img.height);
@@ -310,13 +310,13 @@ $(function() {
 	);
 
 	// initially set remove_image icon to hidden
-	$(".remove_image").css('visibility', 'hidden');
-	$(".remove_image").on("click",
+	$("#remove_image").css('visibility', 'hidden');
+	$("#remove_image").on("click",
 		function() {
 			$("#viewing_window").droppable("disable");
 			$("#viewing_window img").remove();
 			$("#image_select").val(null);
-			$(".remove_image").css('visibility', 'hidden');
+			$("#remove_image").css('visibility', 'hidden');
 			$(".shape").remove();
 			$(".shape_property").val(null);
 			$(".field_property").val(null);
@@ -336,7 +336,7 @@ $(function() {
 						$("#viewing_window .shape").remove();
 					}
 					$(img).css("border", "1px solid black");
-					$(".remove_image").css('visibility', 'visible');
+					$("#remove_image").css('visibility', 'visible');
 					$("#viewing_window").droppable("enable");
 					$("#viewing_window").width(img.width);
 					$("#viewing_window").height(img.height);
@@ -697,7 +697,7 @@ $(function() {
 		modal: true,
 		width: 'auto',
 		buttons: {
-			"Ok": function() {
+			"Load": function() {
 				try {
 					var js_input = JSON.parse($("#json_input_text").val());
 					// remove current globals and fields before parsing
@@ -808,6 +808,7 @@ $(function() {
 	$("#viewing_window").on("drop", 
 		function(event, ui) {
 			var $new_shape;
+			$(".selected_shape").addClass("unselected_shape");
 			$(".selected_shape").removeClass("selected_shape");
 			
 			if (ui.draggable.attr("id") == "make_box") {

@@ -34,6 +34,10 @@ h5 {
 	font-weight: bold;
 }
 
+.sub_menu > button {
+	margin: 2px;
+}
+
 /*
 
 	Toolbar elements
@@ -48,6 +52,14 @@ h5 {
 	display: inline-block;
 	text-align: center;
 	vertical-align: middle;
+}
+
+#dropdown {
+	margin-bottom: 8px;
+}
+
+#remove_image:hover {
+	background-color: grey;
 }
 
 #file_browse {
@@ -76,8 +88,8 @@ hr {
 
 .selected_shape {
 	position: absolute;
-	opacity: 1;
-	background-color: green;
+	opacity: .90 !important;
+	background-color: green !important;
 }
 
 .menu_button:hover{
@@ -90,6 +102,10 @@ hr {
 
 .shape_property {
 	width: 6em !important;
+}
+
+.shape {
+	background-color: lightskyblue;
 }
 
 #properties_menu {
@@ -123,7 +139,7 @@ hr {
 	height: 40px;
 	text-align: center; 
 	border: 2px solid black;
-	opacity: 0.75;
+	opacity: 0.5;
 	cursor: move;
 }
 
@@ -134,7 +150,7 @@ hr {
 	text-align: center; 
 	border: 2px solid black; 
 	border-radius: 50%;
-	opacity: 0.75;
+	opacity: 0.5;
 	cursor: move;
 }
 
@@ -184,9 +200,14 @@ hr {
 	width: 400px;
 }
 
-#create_json_dialog {
-	height: 200px;
-	width: 600px;
+#json_output_text {
+	height: 400px;
+	width: 550px;
+}
+
+#json_input_text {
+	height: 400px;
+	width: 550px;
 }
 
 #field_label {
