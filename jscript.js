@@ -691,37 +691,34 @@ $(function() {
 		}
 	);
 	
-	// JSON load dialog
-	$("#load_json_dialog").dialog({
-		autoOpen: false,
-		modal: true,
-		width: 'auto',
-		buttons: {
-			"Load": function() {
-				try {
-					var js_input = JSON.parse($("#json_input_text").val());
+	// set image_select icon callback
+	$("#input_file_browse").on("change", 
+		function (e) {
+			try {
+				var fileToLoad = e.target.files[0];
+				var fileReader = new FileReader();
+				var json_text = "";
+				
+				fileReader.onload = function(fileLoadedEvent) 
+				{
+					json_text = fileLoadedEvent.target.result;				
 					// remove current globals and fields before parsing
 					$("#global_properties fieldset").empty();
 					$("#field_properties fieldset").empty();
 					$(".shape").remove();
 					
-					parse_input(js_input);
-				} catch(e) {
-					// TODO: add appropriate error message dialog
-					alert(e);
-				}
-				$(this).dialog("close");
-			},			
-			"Cancel": function() {
-				$("#json_load_text").val(null)
-				$(this).dialog("close");
+					parse_input(JSON.parse(json_text));
+				};
+				fileReader.readAsText(fileToLoad, "UTF-8");
+			} catch(e) {
+				alert("Failed to load JSON file");
 			}
 		}
-	});
+	);	
 	
 	$("#load_json").on("click",
 		function() {
-			$("#load_json_dialog").dialog("open");
+			$("#input_file_browse").click();
 		}
 	);
 

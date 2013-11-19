@@ -70,6 +70,14 @@ h5 {
 	visibility: hidden;
 }
 
+#input_file_browse {
+	/* The file browse button is set to 'hidden' because
+	I'm replacing the typical "Choose file..." button
+	with a picture icon from font-awesome. The file_browse
+	input element is invoked when the picture icon is clicked. */
+	visibility: hidden;
+}
+
 #copy_shape {
 	vertical-align:middle;
 	float: right;
