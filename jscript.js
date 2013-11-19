@@ -215,6 +215,10 @@ var parse_input = function(js_text) {
 			for (index in shapes) {
 				make_shape(shapes[index], resize_ratio);
 			}
+			
+			$("#viewing_window img").data("orig_width", js_text["width"]);
+			$("#viewing_window img").data("orig_height", js_text["height"]);
+			console.log("parsed file");
 		}
 
 /* Creates a text file and downloads the file when the function is called.
@@ -695,6 +699,7 @@ $(function() {
 	$("#input_file_browse").on("change", 
 		function (e) {
 			try {
+				console.log("load json input file");
 				var fileToLoad = e.target.files[0];
 				var fileReader = new FileReader();
 				var json_text = "";
@@ -708,6 +713,7 @@ $(function() {
 					$(".shape").remove();
 					
 					parse_input(JSON.parse(json_text));
+					$("#input_file_browse").val(null);
 				};
 				fileReader.readAsText(fileToLoad, "UTF-8");
 			} catch(e) {
@@ -735,11 +741,20 @@ $(function() {
 				function() {
 					json_output[$(this).data("label")] = $(this).val();
 				}
-			);	
+			);
+
+			var scale_factor = 1;
 			
 			/* add image height and width to JSON */
-			json_output["width"] = $("#viewing_window img").width();
-			json_output["height"] = $("#viewing_window img").height();
+			if ($("#viewing_window img").data("orig_width") && $("#viewing_window img").data("orig_height")) {
+				json_output["width"] = $("#viewing_window img").data("orig_width");
+				json_output["height"] = $("#viewing_window img").data("orig_height");
+			
+				scale_factor = 1.0 * $("#viewing_window img").data("orig_width") / $("#viewing_window img").width();
+			} else {
+				json_output["width"] = $("#viewing_window img").width();
+				json_output["height"] = $("#viewing_window img").height();
+			}
 
 			/* create an array of objects for all shapes */
 			var shape_array = [];
@@ -767,16 +782,16 @@ $(function() {
 					}
 					
 					/* add all shape properties to the tuple, NOTE: rounding all values down*/
-					curr_tuple["x"] = Math.floor($(this).position().left + ($(this).width() / 2.0));
-					curr_tuple["y"] = Math.floor($(this).position().top + ($(this).height() / 2.0))
+					curr_tuple["x"] = Math.floor(($(this).position().left + ($(this).width() / 2.0)) * scale_factor);
+					curr_tuple["y"] = Math.floor(($(this).position().top + ($(this).height() / 2.0)) * scale_factor);
 					
 					/* NOTE: assumes that shape is either a square or circle */
 					if ($(this).hasClass("square_item")) {
-						curr_tuple["width"] = Math.floor($(this).width());
-						curr_tuple["height"] = Math.floor($(this).height());
+						curr_tuple["width"] = Math.floor($(this).width() * scale_factor);
+						curr_tuple["height"] = Math.floor($(this).height() * scale_factor);
 						
 					} else {
-						curr_tuple["radius"] = Math.floor($(this).width() / 2.0);
+						curr_tuple["radius"] = Math.floor(($(this).width() / 2.0) * scale_factor);
 					}
 					
 					shape_array.push(curr_tuple);
