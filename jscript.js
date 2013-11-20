@@ -203,12 +203,11 @@ var parse_input = function(js_text) {
 				} else {
 					make_global(g_prop, js_text[g_prop]);
 				}
-			}
-			
+			}	
 			var shapes = js_text["fields"];
 			
 			var resize_ratio = 1;
-			if($("#viewing_window img").width() != js_text["width"]) {
+			if($("#viewing_window img").width() != js_text["width"] && !$("#orig_size_checkbox").prop("checked")) {
 				resize_ratio = 1.0 * $("#viewing_window img").width() / js_text["width"];
 			}
 
@@ -218,7 +217,12 @@ var parse_input = function(js_text) {
 			
 			$("#viewing_window img").data("orig_width", js_text["width"]);
 			$("#viewing_window img").data("orig_height", js_text["height"]);
-			console.log("parsed file");
+			
+			if ($("#orig_size_checkbox").prop("checked")) {
+				console.log("setting image to original size");
+				$("#viewing_window img").width(js_text["width"]);
+				$("#viewing_window img").height(js_text["height"]);
+			}
 		}
 
 /* Creates a text file and downloads the file when the function is called.
@@ -671,7 +675,10 @@ $(function() {
 		modal: true,
 		width: 'auto',
 		buttons: {
-			"Ok": function() {
+			"Download": function() {
+				download($("#input_file_name").val(), $("#json_output_text").val());
+			},
+			"Cancel": function() {
 				$(this).dialog("close");
 			}
 		}
@@ -803,12 +810,6 @@ $(function() {
 			
 			$("#json_output_text").val(JSON.stringify(json_output, null, "\t"));
 			$("#create_json_dialog").dialog("open");
-		}
-	);
-	
-	$("#download_json").on("click",
-		function() {
-			download("odk_output.json", $("#json_output_text").val());
 		}
 	);
 	

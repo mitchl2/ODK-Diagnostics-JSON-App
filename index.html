@@ -48,6 +48,7 @@
 				<h4>Create JSON</h4>
 				<button id="make_json" class="ui-state-default">Generate JSON</button>
 				<button id="load_json" class="ui-state-default">Load JSON</button>
+				<input id="orig_size_checkbox" type="checkbox"><span> Original size</span>
 			</div>
 			<div id="help" class=" sub_menu main_row col-md-2 col-xs-3">
 				<h4>About</h4>
@@ -167,12 +168,14 @@
 		<input type="text" name="name" id="new_global_val" class="text ui-widget-content ui-corner-all dialog_input" />
 	</div>
 	
-	<!-- this dialog menu is opened when the make_json icon is clicked -->
 	<div id="create_json_dialog" title="Generated JSON File">
 		<textarea id="json_output_text" readonly></textarea>
-		<button id="download_json">Download</button>
+		<br>
+		<br>
+		<span>Filename </span><input id="input_file_name" type="text" name="name" placeholder="Enter filename."></input>
 	</div>
 	
+	<!-- this dialog menu is opened when the make_json icon is clicked -->
 	<!-- this dialog menu is opened when the help icon is clicked -->
 	<div id="help_dialog" title="Help">
 		<p id="title">Follow the steps below to create your JSON output.</p>
@@ -196,10 +199,4 @@
 			<img src="help/json_menu.PNG">
 		</div>
 	</div>
-	
-	<!-- this dialog menu is opened when the load json button is clicked 
-	<div id="load_json_dialog" title="Load JSON File">
-		<p>Paste your text JSON output into the textbox below and click "Load".</p>
-		<textarea id="json_input_text"></textarea>
-	</div>-->
 </html>
