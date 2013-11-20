@@ -1,0 +1,142 @@
+/* 
+ODK Diagnostics UI
+CSS Style Sheet
+Mitchell Lee
+10-7-13
+*/
+
+.ui-dialog, .ui-front {
+	/* makes dialog boxes appear above other elements, 
+	also makes the background inactive while a dialog
+	box is open */
+	z-index: 10000 !important;
+}
+
+.row {
+	/* create vertical space between columns */
+	margin-bottom: 15px;
+	margin-left: 5px;
+}
+
+.navbar {
+	/* overrides default margin added to element */
+	margin-bottom: 0px;
+}
+
+h3 {
+	text-align: center;
+}
+
+legend {
+	margin-bottom: 5px;
+}
+
+#file_browse {
+	/* The file browse button is set to 'hidden' because
+	I'm replacing the typical "Choose file..." button
+	with a picture icon from font-awesome. The file_browse
+	input element is invoked when the picture icon is clicked. */
+	visibility: hidden;
+}
+
+.menu_shape {
+	display: inline-block;
+}
+
+.sub_menu {
+	border: 1px solid black;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+#shapes_menu .square_item{
+	width: 40px;
+	height: 40px;
+	border: 3px solid black;
+}
+
+#shapes_menu .circle_item {
+	width: 40px;	
+	height: 40px;
+	border: 3px solid black; 
+	border-radius: 50%;
+}
+
+#viewing_window {
+	/* this overrides the default 15px padding
+	that bootstrap adds to all columns */
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+#viewing_window .square_item {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	text-align: center; 
+	border: 2px solid black;
+	opacity: 0.5;
+	cursor: move;
+}
+
+#viewing_window .circle_item {
+	position: absolute;
+	width: 40px;	
+	height: 40px;
+	text-align: center; 
+	border: 2px solid black; 
+	border-radius: 50%;
+	opacity: 0.5;
+	cursor: move;
+}
+
+#json_text {
+	height: 200px;
+	width: 400px;
+}
+
+#create_json_dialog {
+	height: 200px;
+	width: 600px;
+}
+
+.step {
+	display: inline-block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.step p {
+	width: 250px;
+	float: left;
+	vertical-align: middle;
+}
+
+#help_dialog img {
+	float: right;
+}
+
+.add_property {
+	margin-right: 10px;
+}
+
+.menu_button:hover{
+	background-color: grey;
+}
+
+.selected_shape {
+	position: absolute;
+	opacity: 1;
+	background-color: green;
+}
+
+.input_text {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.input_form {
+	margin-right: 10px;
+	float: right;
+	width: 5em;
+}
