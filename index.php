@@ -1,0 +1,212 @@
+<?php 
+header("Access-Control-Allow-Origin: *");
+header("access-control-allow-credentials: true"); 
+?>
+
+<html>
+	<head>
+		<title>jQuery UI Demo</title>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script src="jscript.js"></script>
+		
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		
+		<script src="js/html2canvas.js"></script>
+		<!-- this script is required because for browsers that 
+		do not support the toBlob function on canvas elements -->
+		<script src="js/canvas-toBlob.js"></script>
+		<script src="js/FileSaver.js"></script>
+		
+		<!-- Font Awesome library -->
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+		<!-- -->
+		
+		<link rel="stylesheet" href="stylesheet.css" />
+
+		<!-- this script is from the JavaScript Load Image library -->
+		<script src="js/load-image.min.js"></script>
+		<!-- -->
+	</head>
+	<body>
+		<div id="toolbar" class="row">
+			<div class="title_container col-md-2 col-xs-3">
+				<h3 id="page_title" class="row">ODK Diagnostics</h3>
+			</div>
+			<div id="image_menu" class="sub_menu main_row col-md-2 col-xs-3">		
+				<h4>Images</h4>
+				<i class="fa fa-picture-o fa-lg" id="image_select"></i>
+				<select id="dropdown">
+					<option value="none">None</option>
+					<option value="sample_images/SD_HIV.jpg">SD HIV</option>
+					<option value="sample_images/DFA_Multiplex.jpg">DFA Multiplex</option>
+					<option value="sample_images/SD_Malaria.jpg">SD Malaria</option>
+				</select>
+				<br>
+				<span id="remove_image">Remove image <i class="fa fa-minus-square remove_image"></i></span>
+			</div>
+			<div id="shapes_menu" class=" sub_menu main_row col-md-2 col-xs-3">
+				<h4>Shapes</h4>
+					<div id="make_box" class="menu_shape square_item"></div>
+					<div id="make_circle" class="menu_shape circle_item"></div>
+					<button id="copy_shape" class="ui-state-default">Copy</button>	
+			</div>
+			<div id="create_json" class=" sub_menu main_row col-md-2 col-xs-3">
+				<h4>Create JSON</h4>
+				<button id="make_json" class="ui-state-default">Generate JSON</button>
+				<button id="load_json" class="ui-state-default">Load JSON</button>
+				<input id="orig_size_checkbox" type="checkbox"><span> Original size</span>
+				<button id="save_image">Save Image</button>
+			</div>
+			<div id="help" class=" sub_menu main_row col-md-2 col-xs-3">
+				<h4>About</h4>
+				<button id="help_button" class="ui-state-default">Help</button>
+				<button id="about_button" class="ui-state-default">What is ODK Diagnostics?</button>
+			</div>
+		</div>
+		<div class="row">
+			<div id="properties_menu" class="col-md-2 col-xs-3">
+				<div id="shape_properties">
+					<h5>Shape Properties</h5>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">X Position</span>
+						<input type="text" id="x_pos" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Y Position</span>
+						<input type="text" id="y_pos" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Width</span>
+						<input type="text" id="shape_width" class="form-control shape_property" placeholder="">
+					</div>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon shape_prop_label">Height</span>
+						<input type="text" id="shape_height" class="form-control shape_property" placeholder="">
+					</div>
+					
+				</div>
+				<hr>
+				<div id="field_properties">
+					<h5>Field Properties</h5>
+					<div class="btn-group" id="shape_type">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="shape_type_label">Type <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+						<li><a href="#">Type 1</a></li>
+						<li><a href="#">Type 2</a></li>
+						<li><a href="#">Type 3</a></li>
+					  </ul>
+					</div>
+					<br>
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon">Name</span>
+						<input id="Name" type="text" class="form-control" placeholder="" readonly>
+						<span class="input-group-addon"><i id="edit_name" class="fa fa-pencil fa-sm"></i></span>
+					</div>
+					<br>
+					<div id="add_field_property" class="menu_button">
+						New property <i class="fa fa-plus-square"></i>
+					</div>
+					<br>
+					<form>
+						<fieldset>
+						
+						</fieldset>
+					</form>
+				</div>
+				<hr>
+				<div id="global_properties">
+					<h5>Global Properties</h5>				
+					<div id="add_global_property" class="menu_button">
+						New property <i class="fa fa-plus-square"></i>
+					</div>
+					<br>
+					<form>
+						<fieldset>
+						
+						</fieldset>
+					</form>	
+					<br>
+				</div>
+			</div>
+			<!-- issue: shapes can be dragged outside the bounds of the image in the viewing window because the
+						size of the viewing window is being set here according the number of columns allocated
+						to the window -->
+			<div id="viewing_window" class="col-md-10 col-xs-9">
+			</div>			
+		</div>
+	</body>
+	
+	<!-- this element is hidden, when the image_select button is clicked then 
+		this input element will be clicked -->
+	<input type="file" id="file_browse" accept="image/*">
+	
+	<!-- this element is hidden, when the image_select button is clicked then 
+	this input element will be clicked -->
+	<input type="file" id="input_file_browse">
+	
+	<!-- this dialog menu is opened when the add_shape_property icon is clicked -->
+	<div id="field_prop_dialog" title="Create field property">
+		<label for="name">Name</label>
+		<input type="text" name="name" id="new_field_prop_label" class="text ui-widget-content ui-corner-all dialog_input" />
+		<br>
+		<label for="name">Value</label>
+		<input type="text" name="name" id="new_field_prop_val" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+	
+	<!-- this dialog menu is opened when an edit field icon is clicked -->
+	<div id="update_field_dialog" title="Update field property">
+		<label id="field_label" for="name"></label>
+		<input type="text" name="name" id="new_field_val" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+
+	<!-- this dialog menu is opened when the add_global_property icon is clicked -->
+	<div id="global_prop_dialog" title="Create global property">
+		<label id="global_dialog_label" for="name">Name</label>
+		<input type="text" name="name" id="new_global_prop_label" class="text ui-widget-content ui-corner-all dialog_input" />
+		<br>
+		<label for="name">Value</label>
+		<input type="text" name="name" id="new_global_prop_val" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+		
+	<!-- this dialog menu is opened when an edit global icon is clicked -->
+	<div id="update_global_dialog" title="Update global property">
+		<label id="global_label" for="name"></label>
+		<input type="text" name="name" id="new_global_val" class="text ui-widget-content ui-corner-all dialog_input" />
+	</div>
+	
+	<div id="create_json_dialog" title="Generated JSON File">
+		<textarea id="json_output_text" readonly></textarea>
+		<br>
+		<br>
+		<span>Filename </span><input id="input_file_name" type="text" name="name" placeholder="Enter filename."></input>
+	</div>
+	
+	<!-- this dialog menu is opened when the make_json icon is clicked -->
+	<!-- this dialog menu is opened when the help icon is clicked -->
+	<div id="help_dialog" title="Help">
+		<p id="title">Follow the steps below to create your JSON output.</p>
+		<div class="step">
+			<p>Click the picture icon to browse your computer for an image, or select a sample image from the drop-down menu.</p>
+			<img src="help/images_menu.PNG">
+		</div>
+		<br>
+		<div class="step">
+			<p>Click and drag shapes onto the selected image.</p>
+			<img src="help/shapes_menu.PNG">
+		</div>
+		<br>
+		<div class="step">
+			<p>Select a shape on the image to view its position (relative to the top left corner of the image) and size. New shape properties can be created and edited in the <b>Field Properties</b> menu. Global properties can also be created and edited by using the <b>Global Properties</b> menu.</p>
+			<img src="help/properties_menu.PNG">
+		</div>
+		<br>
+		<div class="step">
+			<p>After placing and resizing the appropriate shapes onto the image, click the Generate JSON File.</p>
+			<img src="help/json_menu.PNG">
+		</div>
+	</div>
+</html>
